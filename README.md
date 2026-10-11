@@ -26,6 +26,19 @@ Or download the repository ZIP from GitHub, extract it, open a terminal in that 
 
 **The instructor prompt does not execute shell commands.** Your second tab is a normal shell. Start each task in the generated lab folder; navigation exercises tell you when to return there.
 
+## Start with the two original lessons
+
+Prefer a shorter session before the full course? These are the original hands-on lessons that led to Terminal Academy. Both are standalone scripts with real practice files, two-tab instructions, hints, explanations, and results.
+
+| Lesson | Exercises | What you practise | Run from the repository folder |
+| --- | --- | --- | --- |
+| [1. Terminal basics](lessons/terminal_practice.py) | 10 | Finding and reading files, hidden files, searching logs, creating folders, copying, renaming, counting lines | `python3 lessons/terminal_practice.py` |
+| [2. Files, pipes, and logs](lessons/terminal_practice_2.py) | 12 | Navigation, spaced filenames, head/tail, filtering logs, pipes, unique names, appending, permissions | `python3 lessons/terminal_practice_2.py` |
+
+Suggested order: **Lesson 1 → Lesson 2 → Terminal Academy**. You can also start directly with the full course.
+
+Each short lesson generates a fresh temporary lab every time you launch it. The lab stays available for review at the path printed by the script, but short-lesson progress does not resume between sessions or transfer into Terminal Academy. The full course has its own saved progress.
+
 ## Controls
 
 | At the chapter menu | Action |
