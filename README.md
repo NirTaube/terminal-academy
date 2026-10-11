@@ -37,6 +37,8 @@ Prefer a shorter session before the full course? These are the original hands-on
 
 Suggested order: **Lesson 1 → Lesson 2 → Terminal Academy**. You can also start directly with the full course.
 
+Lesson 2 presents one task per screen, with numbered steps, separate file/output labels, and a pause after feedback. Type `task` to reread the current screen. Run `python3 lessons/terminal_practice_2.py --no-clear` if you prefer to keep previous screens visible.
+
 Each short lesson generates a fresh temporary lab every time you launch it. The lab stays available for review at the path printed by the script, but short-lesson progress does not resume between sessions or transfer into Terminal Academy. The full course has its own saved progress.
 
 ## Controls
