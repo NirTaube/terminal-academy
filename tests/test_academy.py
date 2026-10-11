@@ -172,6 +172,15 @@ class RecipeTests(unittest.TestCase):
         if runtime.server:
             self.assertFalse(runtime.thread.is_alive())
 
+    def test_local_server_does_not_perform_hostname_lookup(self):
+        with patch('socket.getfqdn', side_effect=AssertionError('Local startup must not depend on DNS')):
+            runtime = academy.Runtime('test-token')
+            try:
+                self.assertIsNotNone(runtime.port)
+                self.assertEqual(runtime.server.server_name, 'localhost')
+            finally:
+                runtime.close()
+
 
 class CommandLineTests(unittest.TestCase):
     def invoke(self, *args, inputs=''):

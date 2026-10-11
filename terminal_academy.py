@@ -12,6 +12,7 @@ import re
 import secrets
 import shlex
 import shutil
+import socketserver
 import stat
 import subprocess
 import sys
@@ -130,8 +131,16 @@ class Runtime:
             def log_message(self, *args):
                 pass
 
+        class LocalHTTPServer(http.server.ThreadingHTTPServer):
+            def server_bind(self):
+                # HTTPServer normally performs reverse DNS here. Our loopback
+                # server already has a known name; DNS must not delay the UI.
+                socketserver.TCPServer.server_bind(self)
+                self.server_name = "localhost"
+                self.server_port = self.server_address[1]
+
         try:
-            self.server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+            self.server = LocalHTTPServer(("127.0.0.1", 0), Handler)
             self.port = self.server.server_address[1]
             self.thread = threading.Thread(target=self.server.serve_forever, daemon=True)
             self.thread.start()
