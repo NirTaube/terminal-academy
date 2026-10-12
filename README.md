@@ -49,6 +49,23 @@ Lessons 4 and 5 start a local HTTP server; Lesson 4 also starts disposable proce
 
 Each short lesson generates a fresh temporary lab every time you launch it. The lab stays available for review at the path printed by the script, but short-lesson progress does not resume between sessions or transfer into Terminal Academy. The full course has its own saved progress.
 
+## Tool starter track — Lessons 7–22
+
+After the foundations, there are **16 tool starters with six exercises each** (96 exercises). Start with netcat, Nmap, and Wireshark, then Burp Suite and the web lessons. Each includes purpose/prerequisite notes, a fresh lab, hints, and checked results or clearly labelled guided GUI work.
+
+```bash
+python3 tool_lessons/tool_lessons.py --list
+python3 tool_lessons/tool_lessons.py nmap
+python3 tool_lessons/tool_lessons.py wireshark
+python3 tool_lessons/tool_lessons.py burpsuite
+```
+
+The catalogue covers Recon-ng, Maltego, Nmap, Wireshark, Aircrack-ng, Metasploit, Hydra, Nikto, sqlmap, netcat/Ncat, Empire, John the Ripper, PowerSploit, timestomp, dnscat2, and Burp Suite. See [TOOL_LESSONS.md](TOOL_LESSONS.md) for the complete lesson map, official references, prerequisites, and what each starter actually does.
+
+These are introductions, not complete operational courses. Some use real loopback targets or offline tool invocations; others introduce a framework through explicitly synthetic evidence or guided application steps. The instructor does not install the tools. Missing tools can be skipped, although some later tasks need their reports. The help text explains prerequisites and alternatives.
+
+Keep `tool_lessons/` and `lessons/` together. GUI use is self-reported. Synthetic records are labelled and kept separate from live results. Active examples use only generated local services; the sqlmap example has an intentionally unsafe query over an in-memory fictional database. No real credentials or wireless captures are bundled.
+
 ## Controls
 
 | At the chapter menu | Action |
@@ -157,7 +174,7 @@ Files and scores stay on your computer. There is no telemetry. DNS practice is o
 python3 -m unittest discover -s tests -v
 ```
 
-Tests cover the full course and all six short lessons: fixture creation, real command recipes, incorrect answers, file validation, permission checks, process/server lifecycle, hints, guided versus independent scoring, readable task layouts, the menu, and resuming. Internet DNS, interactive history, and actual keyboard/editor interaction are not automated. Full-course tests skip recipes whose tools are unavailable. GitHub Actions checks macOS and Ubuntu with Python 3.10 and 3.14.
+Tests cover the full course, six foundation lessons, and the sixteen tool starters: fixture creation, real available command recipes, incorrect answers, file validation, permission checks, process/server lifecycle, hints, guided versus independent scoring, readable task layouts, the menu, and resuming. Internet DNS, interactive history, and actual GUI/keyboard/editor interaction are not automated. Recipes whose required tools are unavailable are skipped. GitHub Actions checks macOS and Ubuntu with Python 3.10 and 3.14; an additional Ubuntu job installs selected CLI tools to test loopback scanning/authentication/SQL checks and offline packet decoding. Framework setup and upstream offensive-module operation are not automated.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) to add exercises or report a problem.
 

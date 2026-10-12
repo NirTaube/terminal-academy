@@ -31,3 +31,20 @@ jobs:
         run: brew list tree >/dev/null 2>&1 || brew install tree
       - name: Run tests
         run: python3 -m unittest discover -s tests -v
+
+  tool-integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.14'
+      - name: Install selected tool dependencies in the runner
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          sudo apt-get update
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y nmap tshark hydra sqlmap aircrack-ng netcat-openbsd john
+      - name: Exercise local targets and offline captures
+        run: python3 -m unittest discover -s tests -p test_tool_lessons.py -v

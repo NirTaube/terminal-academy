@@ -54,7 +54,13 @@ def capture(root, title, steps, filename, command, clue, explanation,
             return False
         contents = read(target)
         return contents == expected if expected is not None else bool(re.search(pattern, contents, re.M))
-    return task(title, steps, check, command + " > reports/" + filename,
+    # Redirect stdout first, then duplicate stderr, so help written to stderr
+    # reaches the report instead of the instructor's original output stream.
+    combined = command.endswith(" 2>&1")
+    if combined:
+        command = command[:-5]
+    recipe = command + " > reports/" + filename + (" 2>&1" if combined else "")
+    return task(title, steps, check, recipe,
                 clue, explanation, source=source, output="reports/" + filename,
                 guided=guided)
 
@@ -140,6 +146,8 @@ class Display:
         self.screen("LESSON {} | TASK {:02d} OF {:02d}".format(lesson, number, total))
         self.text(item["title"])
         self.text("\nCOMMAND TAB: stay in your lesson's lab folder.")
+        if item.get("target"):
+            self.text("LOCAL TARGET: " + item["target"])
         if item["source"]:
             self.text("FILE / TARGET: " + item["source"])
         if item["output"]:
@@ -148,8 +156,11 @@ class Display:
         for index, step in enumerate(item["steps"], 1):
             print(textwrap.fill("{}. {}".format(index, step), self.width, subsequent_indent="   "))
         if item["guided"]:
-            self.text("\nGUIDED EXAMPLE: run these lines in the command tab.")
-            self.commands(item["command"])
+            if item.get("walkthrough"):
+                self.text("\nGUIDED GUI EXERCISE: follow the steps in the named application. Completion is self-reported.")
+            else:
+                self.text("\nGUIDED EXAMPLE: run these lines in the command tab.")
+                self.commands(item["command"])
         self.text("\nSUBMIT IN THIS TAB\n" + item["submit"])
         self.text("\nCONTROLS: hint | task (reread) | skip | quit")
 
@@ -190,15 +201,15 @@ def run_task(item, number, total, lesson, display):
         display.text("\nNOT YET. Check the result, filenames, and working folder. Use hint for help.")
 
 
-def run_lesson(number, builder):
+def run_lesson(number, builder, argv=None, resource_factory=Resources):
     parser = argparse.ArgumentParser(description="Hands-on Terminal Academy Lesson {}".format(number))
     parser.add_argument("--no-clear", action="store_true", help="Keep earlier screens visible")
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
     if platform.system() not in ("Darwin", "Linux"):
         parser.error("Use macOS or a Linux terminal, including Kali.")
     root = Path(tempfile.mkdtemp(prefix="terminal-lesson{}-".format(number))).resolve()
     (root / "reports").mkdir()
-    resources = Resources()
+    resources = resource_factory()
     display = Display(args.no_clear)
     results = []
     lesson = None

@@ -23,6 +23,8 @@ Do not upload your entire lab folder, shell history, or process listing. Usually
 
 Keep the instructor dependency-free. Add exercises in `build_tasks()` with a unique ID, a clear goal, helpful hints, an explanation, and a meaningful result check. Use the generated fixtures rather than a learner's existing files. Label exercises that cannot be verified automatically as guided.
 
+Foundation Lessons 3–6 use `build_lesson()` and the shared `lessons/lesson_support.py` instructor. Tool starters live in `tool_lessons/catalog.py`, with generated loopback targets and synthetic captures in `lab_environment.py`. Preserve the distinction between live observations, synthetic teaching evidence, and self-reported GUI actions. Link primary tool documentation, state prerequisites, and do not describe an orientation exercise as a complete operational lab.
+
 The test suite runs real recipes inside temporary environments. It must not run installation commands, require elevated access, or rely on external network services. Preserve compatibility with Python 3.10+, macOS, and Linux. Add platform alternatives when commands differ.
 
 Use `--new` for a fresh manual practice run. Check readable output at ordinary terminal widths and confirm that entering `menu`, `skip`, `quit`, and Ctrl+C behaves sensibly.
